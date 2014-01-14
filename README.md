@@ -13,7 +13,5 @@ Powerups
   Scatter laser
   Beam laser
 
-+1 Life pickups
-
 More enemies
   Mini-boss things (with more health obviously)  
