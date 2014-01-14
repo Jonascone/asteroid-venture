@@ -9,7 +9,7 @@ protected:
 public:
     static const char GRAPHIC[];
 
-    Laser(const short, const short, const short);
+    Laser(const short, const short, const short, const WORD = 0x0C);
     ~Laser();
 
     void think();

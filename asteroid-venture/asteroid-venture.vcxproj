@@ -86,10 +86,13 @@
     <ClCompile Include="Fighter.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Graphic.cpp" />
+    <ClCompile Include="InvulnerabilityPickup.cpp" />
     <ClCompile Include="Laser.cpp" />
     <ClCompile Include="LifePickup.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NukePickup.cpp" />
     <ClCompile Include="Pickup.cpp" />
+    <ClCompile Include="RapidFirePickup.cpp" />
     <ClCompile Include="Text.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -100,9 +103,12 @@
     <ClInclude Include="Fighter.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Graphic.h" />
+    <ClInclude Include="InvulnerabilityPickup.h" />
     <ClInclude Include="Laser.h" />
     <ClInclude Include="LifePickup.h" />
+    <ClInclude Include="NukePickup.h" />
     <ClInclude Include="Pickup.h" />
+    <ClInclude Include="RapidFirePickup.h" />
     <ClInclude Include="Text.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

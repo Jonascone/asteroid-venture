@@ -63,10 +63,19 @@
     <ClCompile Include="Explosion.cpp">
       <Filter>Source Files\Game Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Pickup.cpp">
-      <Filter>Source Files\Game Objects</Filter>
-    </ClCompile>
     <ClCompile Include="LifePickup.cpp">
+      <Filter>Source Files\Game Objects\Pickups</Filter>
+    </ClCompile>
+    <ClCompile Include="Pickup.cpp">
+      <Filter>Source Files\Game Objects\Pickups</Filter>
+    </ClCompile>
+    <ClCompile Include="NukePickup.cpp">
+      <Filter>Source Files\Game Objects\Pickups</Filter>
+    </ClCompile>
+    <ClCompile Include="InvulnerabilityPickup.cpp">
+      <Filter>Source Files\Game Objects\Pickups</Filter>
+    </ClCompile>
+    <ClCompile Include="RapidFirePickup.cpp">
       <Filter>Source Files\Game Objects\Pickups</Filter>
     </ClCompile>
   </ItemGroup>
@@ -102,6 +111,15 @@
       <Filter>Header Files\Game Objects\Pickups</Filter>
     </ClInclude>
     <ClInclude Include="LifePickup.h">
+      <Filter>Header Files\Game Objects\Pickups</Filter>
+    </ClInclude>
+    <ClInclude Include="NukePickup.h">
+      <Filter>Header Files\Game Objects\Pickups</Filter>
+    </ClInclude>
+    <ClInclude Include="InvulnerabilityPickup.h">
+      <Filter>Header Files\Game Objects\Pickups</Filter>
+    </ClInclude>
+    <ClInclude Include="RapidFirePickup.h">
       <Filter>Header Files\Game Objects\Pickups</Filter>
     </ClInclude>
   </ItemGroup>

@@ -33,8 +33,8 @@ Console::~Console()
 
 void Console::clearGraphics()
 {
-    for (auto it : graphics) {
-        delete it;
+    for (auto it = graphics.begin(); it != graphics.end(); ++it) {
+        delete (*it);
     }
     graphics.clear();
 }

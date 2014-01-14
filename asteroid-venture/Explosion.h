@@ -9,7 +9,7 @@ protected:
     const time_t disappear_time;
     static const char GRAPHIC[];
 public:
-    Explosion(const short, const short);
+    Explosion(const short, const short, const bool = true);
     ~Explosion();
 
     void think();

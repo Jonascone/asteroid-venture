@@ -6,9 +6,9 @@
 class Fighter : public Entity
 {
 protected:
-    bool alive, invulnerable, flashing;
+    bool alive, invulnerable, flashing, nuke, rapid_fire;
     int score, lives, active_lasers;
-    time_t respawn_time, invulnerability_time, invulnerability_flash_time;
+    time_t respawn_time, invulnerability_time, invulnerability_flash_time, rapid_fire_time;
     static const char GRAPHIC[];
 public:
     static const int MAX_LASERS = 4;
@@ -31,7 +31,12 @@ public:
 
     bool isAlive() const;
     bool isInvulnerable() const;
+    bool isNuking() const;
+    bool isRapidFiring() const;
 
     void kill();
     void spawn();
+    void setNuke(const bool);
+    void setInvulnerable(const int);
+    void setRapidFire(const int);
 };
