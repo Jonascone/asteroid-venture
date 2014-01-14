@@ -87,7 +87,9 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="Laser.cpp" />
+    <ClCompile Include="LifePickup.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Pickup.cpp" />
     <ClCompile Include="Text.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +101,8 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="Laser.h" />
+    <ClInclude Include="LifePickup.h" />
+    <ClInclude Include="Pickup.h" />
     <ClInclude Include="Text.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

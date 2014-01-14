@@ -6,10 +6,9 @@
 class Explosion : public Entity
 {
 protected:
-    time_t disappear_time;
-public:
+    const time_t disappear_time;
     static const char GRAPHIC[];
-
+public:
     Explosion(const short, const short);
     ~Explosion();
 

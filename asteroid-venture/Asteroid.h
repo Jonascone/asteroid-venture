@@ -6,9 +6,8 @@ class Asteroid : public Entity
 {
 protected:
     const short vel;
-public:
     static const char GRAPHIC[];
-
+public:
     Asteroid(const short, const short, const short);
     ~Asteroid();
 

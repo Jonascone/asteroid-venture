@@ -11,9 +11,9 @@ Game::Game()
 }
 Game::~Game() {}
 
-void Game::pushEntity(Entity *_entity)
+void Game::pushEntity(Entity *_entity, const bool _push_back)
 {
-    console->pushGraphic(_entity);
+    console->pushGraphic(_entity, _push_back);
     entities.push_back(_entity);
 }
 void Game::clearEntities()
@@ -25,8 +25,8 @@ void Game::pushAsteroid()
 {
     time_t new_spawn = clock(); // Spawning of said asteroids.
     if (new_spawn >= spawn_time) {
-        spawn_time = new_spawn + rand() % 1000 + 250;
-        for (int i = 0; i < rand() % 8 + 1; ++i) {
+        spawn_time = new_spawn + rand() % 1000; + 250;
+        for (int i = 0; i < rand() % 1 + 1; ++i) {
             pushEntity(new Asteroid(94, rand() % 40 + 5, -(rand() % 2 + 1)));
         }
     }
@@ -41,6 +41,8 @@ void Game::setupGame() // Set up new game.
     console->pushGraphic(score_text = new Text(0, 0, 0x0A));
     console->pushGraphic(new Text(42, 0, 0x0A, "Asteroid Venture"));
     console->pushGraphic(lives_text = new Text(92, 0, 0x0A));
+    console->pushGraphic(debug = new Text(50, 49, 0x0D));
+
 
     char str1[64] = { '\0' };
     sprintf(str1, "High Score: %i", high_score);
@@ -90,74 +92,80 @@ void Game::drawGame()
             PlaySoundA("audio/pew.wav", NULL, SND_ASYNC | SND_NODEFAULT); // Do stuff if we can.
             fire_held = true;
             player->updateActiveLasers(1);
-            pushEntity(new Laser(fighter_pos.X + 7, fighter_pos.Y + 3, 1));
+            pushEntity(new Laser(fighter_pos.X + 7, fighter_pos.Y + 3, 2));
         }
         else if (!console->keys[VK_CONTROL]) {
             fire_held = false; // If we're not holding control, we can shoot again.
         }
     }
     for (auto it = entities.begin(); it != entities.end(); ++it) { // Update every entity and erase those which want to be deleted.
-        if (!console->inScreen(**it) || (*it)->shouldDelete()) {
-            if ((*it)->getType() == Entity::LASER) player->updateActiveLasers(-1); // If a laser goes offscreen, deduct an active laser.
-            
+        Entity *it_ptr = (*it);
+        const bool in_screen = console->inScreen(*it_ptr);
+        if (!in_screen || it_ptr->shouldDelete()) {
+            switch (it_ptr->getType()) {
+            case Entity::LASER:
+                player->updateActiveLasers(-1); // If a laser goes offscreen, deduct an active laser.
+                break;
+            case Entity::ASTEROID:
+                if (!in_screen) player->updateScore(-5);
+                break;
+            }
+
             // Delete entities marked for deletion.
             auto p_it = it; p_it--;
-            console->eraseGraphic(*it);
-            delete (*it);
+            console->eraseGraphic(it_ptr);
+            delete it_ptr;
             entities.erase(it);
             it = p_it;
-            
             continue;
         }
-        (*it)->think();
-    }
-    for (auto it : entities) { // Loop to check collisions between entities.
-        const int it_type = it->getType();
-        if (it_type != Entity::ASTEROID && it_type != Entity::LASER || it->shouldDelete()) continue;
-        
-        for (auto it2 : entities) {
-            const int it2_type = it2->getType();
-            if (it2_type == Entity::FIGHTER && it->inScreen(*it2)) { // Stuff to be done if we hit a player.
-                if (!player->isAlive() || player->isInvulnerable()) continue;
-               
-                player->kill();
+        const int it_type = it_ptr->getType();
+        if (it_type == Entity::PICKUP) {
+            reinterpret_cast<Pickup *>(it_ptr)->pickup(player);
+        }
+        else if (it_type == Entity::ASTEROID && player->isAlive() && !player->isInvulnerable() && it_ptr->inScreen(*player)) {
+            it_ptr->setDelete(true);
 
-                it->setDelete(true);
+            const COORD centre = player->getCentre();
+            pushEntity(new Explosion(centre.X, centre.Y));
 
-                const COORD centre = it2->getCentre();
-                pushEntity(new Explosion(centre.X, centre.Y));
-                PlaySoundA("audio/mew.wav", 0, SND_ASYNC | SND_NODEFAULT);
-
-                if (player->getLives() <= 0) { // End the game is we've run out of lives.
-                    endGame();
-                    return;
-                }
-                break;
+            if (player->getLives() <= 0) { // End the game is we've run out of lives.
+                endGame();
+                return;
             }
-            else if (it_type != it2_type && it2_type != Entity::EXPLOSION && it->inScreen(*it2)) {
-                if (it_type == Entity::LASER) { // If a laser hit something, deduct an active laser.
-                    player->updateActiveLasers(-1);
+            player->kill();
+        }
+        else if (it_type == Entity::LASER) {
+            for (auto it2 = entities.begin(); it2 != entities.end(); ++it2) {
+                Entity *it2_ptr = (*it2);
+                if (it2_ptr->shouldDelete()) continue;
+
+                const int it2_type = it2_ptr->getType();
+                if (it2_type == Entity::ASTEROID && it_ptr->inScreen(*it2_ptr)) {
+                    it_ptr->kill();
+                    it2_ptr->kill();
+
+                    const COORD centre = it2_ptr->getCentre(); // Centre an explosion and play an exploding-like sound.
+
+                    if ((rand() % 20 == 0)) {
+                        pushEntity(new LifePickup(centre.X, centre.Y), false);
+                    }
+
+                    pushEntity(new Explosion(centre.X, centre.Y), false);
+
+                    player->updateScore(10); // Update the score.
                 }
-
-                it->setDelete(true); // Set entities for deletion.
-                it2->setDelete(true);
-
-                player->updateScore(10); // Update the score.
-
-                const COORD centre = it2->getCentre(); // Centre an explosion and play an exploding-like sound.
-                pushEntity(new Explosion(centre.X, centre.Y));
-                PlaySoundA("audio/mew.wav", 0, SND_ASYNC | SND_NODEFAULT); 
-                break;
             }
         }
+        it_ptr->think();
     }
-
+    
     pushAsteroid(); // Push some asteroids to the screen. Duh.
 
     // Updating of text.
     score_text->setText("Score: %i", player->getScore());
     lives_text->setText("Lives: %i", player->getLives());
-    //debug->setText("Active Lasers: %i", player->getActiveLasers());
+    debug->setText("Active Lasers: %i", player->getActiveLasers());
 }
 void Game::drawEndScreen()
 {

@@ -55,7 +55,7 @@ void Fighter::updateLives(const int _lives)
 }
 void Fighter::updateActiveLasers(const int _lasers)
 {
-    active_lasers = active_lasers + _lasers < 0 ? 0 : active_lasers + _lasers;
+    active_lasers = (active_lasers + _lasers) < 0 ? 0 : (active_lasers + _lasers);
 }
 
 int Fighter::getScore() const
@@ -70,7 +70,7 @@ int Fighter::getActiveLasers() const
 {
     return active_lasers;
 }
-const COORD& Fighter::getPos()
+const COORD& Fighter::getPos() const
 {
     return position;
 }

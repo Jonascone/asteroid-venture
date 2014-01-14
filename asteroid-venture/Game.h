@@ -9,9 +9,7 @@
 #include "Asteroid.h"
 #include "Laser.h"
 #include "Explosion.h"
-
-#include <mmsystem.h> // PlaySound
-#pragma comment (lib, "winmm.lib")
+#include "LifePickup.h"
 
 #include <fstream>    // File I/O
 
@@ -20,7 +18,7 @@ class Game
 private:
     Console *console;
     Text *score_text, *lives_text;
-    //Text *debug;
+    Text *debug;
     Fighter *player;
 
     std::list<Entity *> entities;
@@ -33,7 +31,7 @@ private:
 
     int menu_select, high_score;
 
-    void pushEntity(Entity *);
+    void pushEntity(Entity *, const bool = true);
     void pushAsteroid();
     void clearEntities();
 

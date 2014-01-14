@@ -9,15 +9,24 @@ void Entity::fillBuffer(const char *_data, const WORD _colour)
         }
     }
 }
+WORD Entity::getColour() const
+{
+    return colour;
+}
 
 Entity::Entity(const int _type, const short _x, const short _y, const short _w, const short _h, const char *_data, const WORD _colour)
-: Graphic(_x, _y, _w, _h), type(_type)
+: Graphic(_x, _y, _w, _h), type(_type), colour(_colour)
 {
     fillBuffer(_data, _colour);
 }
 Entity::~Entity() {}
 
-int Entity::getType()
+int Entity::getType() const
 {
     return type;
+}
+void Entity::kill()
+{
+    should_delete = true;
+    should_draw = false;
 }

@@ -9,10 +9,10 @@ protected:
     bool alive, invulnerable, flashing;
     int score, lives, active_lasers;
     time_t respawn_time, invulnerability_time, invulnerability_flash_time;
+    static const char GRAPHIC[];
 public:
     static const int MAX_LASERS = 4;
     static const int MAX_LIVES = 3;
-    static const char GRAPHIC[];
 
     Fighter(const short, const short);
     ~Fighter();
@@ -27,7 +27,7 @@ public:
     int getScore() const;
     int getLives() const;
     int getActiveLasers() const;
-    const COORD& getPos();
+    const COORD& getPos() const;
 
     bool isAlive() const;
     bool isInvulnerable() const;
