@@ -33,7 +33,7 @@ void Game::pushAsteroid()
     if (new_spawn >= spawn_time) {
         spawn_time = new_spawn + random(500, 1000);
         for (int i = 0; i < random(1, 3); ++i) {
-            pushEntity(new Asteroid(94, random(5, 40), -(random(1, 2))));
+            pushEntity(new Asteroid(94, random(5, 40), random(1, 5), -(random(1, 2))));
         }
     }
 }
@@ -118,12 +118,11 @@ void Game::drawGame()
     }
     if (player->isNuking()) { // If the player has picked up the "nuke" pickup, nuke all the asteroids.
         player->setNuke(false);
-        for (auto it = entities.begin(); it != entities.end(); ++it) {
-            Entity *it_ptr = (*it);
-            if (it_ptr->getType() == Entity::ASTEROID) {
-                it_ptr->kill();
+        for (auto it : entities) {
+            if (it->getType() == Entity::ASTEROID) {
+                it->kill();
 
-                const COORD centre = it_ptr->getCentre();
+                const COORD centre = it->getCentre();
                 pushEntity(new Explosion(centre.X, centre.Y, false));
                 player->updateScore(10);
             }
@@ -167,17 +166,16 @@ void Game::drawGame()
             player->kill(); // Kill the player.
         }
         else if (it_type == Entity::LASER) { // Instructions for Lasers
-            for (auto it2 = entities.begin(); it2 != entities.end(); ++it2) { // Iterate through all entities while checking if the laser is hitting something.
-                Entity *it2_ptr = (*it2);
-                if (it2_ptr->shouldDelete()) continue;
+			for (auto it2 : entities) { // Iterate through all entities while checking if the laser is hitting something.
+                if (it2->shouldDelete()) continue;
 
-                const int it2_type = it2_ptr->getType();
-                if (it2_type == Entity::ASTEROID && it_ptr->inScreen(*it2_ptr)) { // On hitting an asteroid ...
+                const int it2_type = it2->getType();
+                if (it2_type == Entity::ASTEROID && it_ptr->inScreen(*it2)) { // On hitting an asteroid ...
                     // Mark the laser and asteroid for deletion.
                     it_ptr->kill();
-                    it2_ptr->kill();
+                    it2->kill();
                                         
-                    const COORD centre = it2_ptr->getCentre(); // Find the centre of the asteroid.
+                    const COORD centre = it2->getCentre(); // Find the centre of the asteroid.
                     const int r = random(1, 500); // Generate a random pickup.
                     if (r > 40); 
                     else if (r > 25) pushEntity(new InvulnerabilityPickup(centre.X, centre.Y), false);
@@ -186,6 +184,11 @@ void Game::drawGame()
                     else if (r > 0) pushEntity(new LifePickup(centre.X, centre.Y), false); 
                                         
                     pushEntity(new Explosion(centre.X, centre.Y), false); // Create an explosion.
+
+					short radius = reinterpret_cast<Asteroid *>(it2)->getRadius();
+					if (radius > 1) { // Decrease size of asteroid until it hits a minimum
+						pushEntity(new Asteroid(centre.X-(radius-1), centre.Y-(radius-1), radius - 1, -1));
+					}
 
                     player->updateScore(10); // Update the score.
                 }
