@@ -33,8 +33,8 @@ Console::~Console()
 
 void Console::clearGraphics()
 {
-    for (auto it = graphics.begin(); it != graphics.end(); ++it) {
-        delete (*it);
+    for (auto it : graphics) {
+        delete it;
     }
     graphics.clear();
 }
@@ -83,8 +83,8 @@ void Console::eraseGraphic(const Graphic *_graphic) // Erase a graphic given by 
 void Console::render() // Render the screen.
 {
     clear();
-    for (auto it = graphics.begin(); it != graphics.end(); ++it) {
-        drawGraphic(**it);
+    for (auto it : graphics) {
+        drawGraphic(*it);
     }
     const COORD write_pos = { 0, 0 };
     WriteConsoleOutputA(out, buffer, dimensions, write_pos, &sr_dimensions);
