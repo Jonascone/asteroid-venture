@@ -8,7 +8,8 @@ protected:
     const short vel;
     static const char GRAPHIC[];
 public:
-    Asteroid(const short, const short, const short);
+	static const char* GetGraphic(short radius);
+    Asteroid(const short, const short, const short, const short);
     ~Asteroid();
 
     void think();

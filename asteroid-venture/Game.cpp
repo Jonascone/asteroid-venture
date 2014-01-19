@@ -33,7 +33,7 @@ void Game::pushAsteroid()
     if (new_spawn >= spawn_time) {
         spawn_time = new_spawn + random(500, 1000);
         for (int i = 0; i < random(1, 3); ++i) {
-            pushEntity(new Asteroid(94, random(5, 40), -(random(1, 2))));
+            pushEntity(new Asteroid(94, random(5, 40), random(1, 5), -(random(1, 2))));
         }
     }
 }
