@@ -187,6 +187,11 @@ void Game::drawGame()
                                         
                     pushEntity(new Explosion(centre.X, centre.Y), false); // Create an explosion.
 
+					short radius = reinterpret_cast<Asteroid *>(it2_ptr)->getRadius();
+					if (radius > 1) { // Decrease size of asteroid until it hits a minimum
+						pushEntity(new Asteroid(centre.X-(radius-1), centre.Y-(radius-1), radius - 1, -1));
+					}
+
                     player->updateScore(10); // Update the score.
                 }
             }

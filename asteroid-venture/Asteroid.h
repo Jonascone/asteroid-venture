@@ -5,6 +5,7 @@
 class Asteroid : public Entity
 {
 protected:
+	const short radius;
     const short vel;
     static const char GRAPHIC[];
 public:
@@ -13,4 +14,6 @@ public:
     ~Asteroid();
 
     void think();
+
+	short getRadius() const;
 };
