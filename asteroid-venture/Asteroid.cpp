@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Asteroid.h"
-#include <math.h>
+#include <cmath>
 
-const char* Asteroid::GetGraphic(short radius) {
+const char* Asteroid::GetGraphic(const short radius) {
 	auto diameter = radius * 2 + 1;
 	auto graphic = new char[diameter*diameter]();
 	for (short i = 0; i < diameter; i++) {
